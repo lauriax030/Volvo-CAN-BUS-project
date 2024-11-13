@@ -53,7 +53,7 @@ void setup() {
     while (1);  // Hang if MCP2515 initialization fails
   }
 
-  //pinMode(CAN0_INT, INPUT);
+  pinMode(CAN0_INT, INPUT);
   CAN0.setMode(MCP_NORMAL);  // Set MCP2515 to normal mode
   Serial.println("MCP2515 in Normal mode.");
 }
