@@ -1,0 +1,32 @@
+19:53:42.504 -> Setup started.
+19:53:43.541 -> Initial K-line message sent.
+19:53:43.541 -> Entering Configuration Mode Successful!
+19:53:43.541 -> Setting Baudrate Successful!
+19:53:43.541 -> MCP2515 Initialized Successfully!
+19:53:43.541 -> MCP2515 in Normal mode.
+19:53:43.541 -> Message ID: 8010001C
+19:53:43.541 -> Data: C0 8E 30 5C 44 0 A3 60 
+19:53:43.657 -> Message ID: 80600006
+19:53:43.657 -> Data: 0 0 5 9B AB FF FC 18 
+19:53:43.732 -> Message ID: 8050003C
+19:53:43.732 -> Data: 83 10 A E C0 20 1A 1C 
+19:53:43.853 -> Message ID: 8010001C
+19:53:43.853 -> Data: 0 8E B0 5C 44 0 23 60 
+19:53:43.935 -> Message ID: 8010001C
+19:53:43.935 -> Data: 80 8E B0 5C 44 0 23 60 
+19:53:44.037 -> Message ID: 8040001E
+19:53:44.037 -> Data: C7 0 91 16 4 0 60 0 
+19:53:45.583 -> Sending K-line message: 84 40 13 B2 F0 3 7C 
+19:53:45.653 -> Message ID: 8010001C
+19:53:45.653 -> Data: C0 8E 30 5C 44 0 A3 60 
+19:53:45.768 -> Message ID: 8010001C
+19:53:45.768 -> Data: C0 8E 30 5C 44 0 A3 60 
+19:53:45.898 -> Message ID: 8010001C
+19:53:45.898 -> Data: 40 8E 30 5C 44 0 A3 60 
+19:53:45.988 -> Message ID: 80600006
+19:53:45.988 -> Data: 0 0 25 9B AB FF FC 18 
+19:53:46.107 -> Message ID: 8010001C
+19:53:46.107 -> Data: 80 8E 30 5C 44 0 23 60 
+19:53:46.195 -> Message ID: 8010001C
+19:53:46.195 -> Data: 0 8E 30 5C 44 0 23 60 
+19:53:46.284 -> Message ID: 8010001C
