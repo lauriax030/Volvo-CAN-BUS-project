@@ -12,10 +12,12 @@ MCP_CAN CAN0(53);  // Assuming you're using digital pin 53 for CS
 unsigned long lastSendTime = 0; // Keep track of the last time the K-line message was sent
 unsigned long sendDelay = 3000; // Delay between K-line messages in milliseconds
 unsigned long lastRequestTime = 0; // Track the last time CAN request was sent
+//unsigned long lastSendTime1 = 0;
+//unsigned long sendDelay1 = 3000;
 // unsigned long requestDelay = 1000; // Delay between CAN requests in milliseconds
 bool waitForReply = false;
 
-void sendKLineMessage() {
+void sendKeepaliveMessage() {
   // Timer to manage delay
   if ((millis() - lastSendTime) < sendDelay) {
     return;  // Exit if the delay time hasn't passed yet
@@ -28,11 +30,21 @@ void sendKLineMessage() {
     Serial.print(klineMessage[i], HEX);
     Serial.print(" ");
     Serial1.write(klineMessage[i]);  // Send each byte of the K-line message
+    
+  unsigned char canbusMessage[8] = {0xD8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  CAN0.sendMsgBuf(0x000FFFFE, 1, 8, canbusMessage);
+  Serial.println("Sending Can-bus message: ");
+  for (int i = 0; i < 8; i++) {
+    Serial.print(canbusMessage[i], HEX);
+    Serial.print(" ");
+    Serial1.write(canbusMessage[i]);  // Send each byte of the K-line message
+  }
   }
   Serial.println();  // Print a newline after sending the message
 
   lastSendTime = millis(); // Update the time when K-line message was last sent
 }
+
 
 void setup() {
   Serial.begin(115200);  // Start serial communication for debugging
@@ -40,10 +52,10 @@ void setup() {
 
   Serial.println("Setup started.");
 
-  // Send initial message on K-line to activate CAN-bus relay
-  sendKLineMessage();
+  // Send initial message on K-line and Can-bus to activate OBD2 port diagnostics
+  sendKeepaliveMessage();
   delay(1000); // Small delay to make sure K-line message is sent initially
-  Serial.println("Initial K-line message sent.");
+  Serial.println("Initial K-line and Can-bus message sent.");
 
   // Initialize MCP2515
   if (CAN0.begin(MCP_ANY, CAN_250KBPS, MCP_8MHZ) == CAN_OK) {
@@ -53,14 +65,14 @@ void setup() {
     while (1);  // Hang if MCP2515 initialization fails
   }
 
-  pinMode(CAN0_INT, INPUT);
+  //pinMode(CAN0_INT, INPUT);
   CAN0.setMode(MCP_NORMAL);  // Set MCP2515 to normal mode
   Serial.println("MCP2515 in Normal mode.");
 }
 
 void loop() {
   // Handle K-line messaging independently from CAN messaging
-  sendKLineMessage();  // Send K-line message if the delay period has passed
+  sendKeepaliveMessage();  // Send K-line message if the delay period has passed
   
   long unsigned int rxId;
   unsigned char len = 0;
