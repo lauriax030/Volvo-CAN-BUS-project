@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <mcp_can.h>
-
+ 
 // MCP2515 CAN interface
 #define CAN0_INT 2 // MCP2515 INT pin to digital pin 2
 MCP_CAN CAN0(53);  // Digital pin 53 for CS
