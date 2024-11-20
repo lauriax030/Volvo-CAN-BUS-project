@@ -12,12 +12,13 @@ MCP_CAN CAN0(53);  // Digital pin 53 for CS
 // Data request messages
 unsigned char reqCoolantTemp[8] = {0xCD, 0x7A, 0xA6, 0x10, 0xD8, 0x01, 0x00, 0x00};
 unsigned char reqBoost[8] = {0xCD, 0x7A, 0xA6, 0x12, 0x9D, 0x01, 0x00, 0x00};
-unsigned char reqAFR[8] = {};
+unsigned char reqAFR[8] = {0xCD, 0x7A, 0xA6, 0x10, 0x34, 0x01, 0x00, 0x00};
+unsigned char reqAFRexpected[8] = {0xCD, 0x7A, 0xA6, 0x12, 0xBB, 0x01, 0x00, 0x00};
 unsigned char reqMisfireCount[8] = {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00};
 unsigned char reqIntakeAirTemp[8] = {0xCD, 0x7A, 0xA6, 0x10, 0xCE, 0x01, 0x00, 0x00};
 
 // Data return messages
-long CoolantTemp, Boost, AFR, MisfireCount, IntakeAirTemp;
+long CoolantTemp, Boost, AFR, AFRexpected, MisfireCount, IntakeAirTemp;
 
 // Timer variables
 unsigned long lastSendTime1 = 0; // K-line message last send time
@@ -87,6 +88,7 @@ void loop() {
 CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqCoolantTemp);
 CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqBoost);
 CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqAFR);
+CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqAFRexpected);
 CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqMisfireCount);
 CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqIntakeAirTemp);
 
@@ -112,9 +114,9 @@ CAN0.sendMsgBuf(0x000FFFFE, 1, 8, reqIntakeAirTemp);
       }
 /*
       if ((buf[3] == 0x) && (buf[4] == 0x)) {
-       AFR = buf[5];
+       AFR = buf[5], buf[6];
       Serial.print("AFR: ");
-      AFR = ();
+      AFR = (AFR * 16.0 / 65536 * 14.7);
       Serial.print(AFR);
       Serial.println();  
       } */
