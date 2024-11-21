@@ -1,0 +1,33 @@
+20:09:46.336 -> Initial K-line and Can-bus message sent.
+20:09:46.336 -> Entering Configuration Mode Successful!
+20:09:46.376 -> Setting Baudrate Successful!
+20:09:46.376 -> MCP2515 Initialized Successfully!
+20:09:46.376 -> MCP2515 in Normal mode.
+20:09:46.376 -> Boost: 1000.00
+20:09:46.418 -> AFRexpected: 14.46
+20:09:46.506 -> AFR: 14.73
+20:09:46.546 -> MisfireCount: 0.00
+20:09:46.546 -> AFR: 14.73
+20:09:46.592 -> IntakeAirTemp: 0.75
+20:09:46.632 -> Boost: 1000.00
+20:09:46.708 -> IntakeAirTemp: 0.75
+20:09:46.746 -> AFRexpected: 14.47
+20:09:46.830 -> IntakeAirTemp: 0.75
+20:09:46.943 -> AFRexpected: 14.47
+20:09:46.974 -> IntakeAirTemp: 0.75
+20:09:47.186 -> AFR: 14.73
+20:09:47.220 -> MisfireCount: 0.00
+20:09:47.309 -> MisfireCount: 0.00
+20:09:47.350 -> AFR: 14.73
+20:09:48.097 -> MisfireCount: 0.00
+20:09:48.260 -> AFRexpected: 14.48
+20:09:48.346 -> Boost: 1000.00
+20:09:48.533 -> AFRexpected: 14.48
+20:09:48.812 -> IntakeAirTemp: 0.75
+20:09:48.812 -> MisfireCount: 0.00
+20:09:49.775 -> AFR: 14.73
+20:09:49.811 -> IntakeAirTemp: 0.75
+20:09:49.857 -> AFR: 14.71
+20:09:49.890 -> AFRexpected: 14.49
+20:09:49.960 -> AFR: 14.73
+20:09:50.000 -> IntakeAirTemp: 0.75
