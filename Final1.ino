@@ -64,6 +64,26 @@ float processMisfireCount(byte highByte, byte lowByte) {
   int rawData = 256 * highByte + lowByte;
   return rawData;
 }
+float processMisfire1 (byte highbyte, byte lowByte) {
+  int rawData =256 * highByte + lowByte;
+  return rawData;
+}
+float processMisfire2 (byte highbyte, byte lowByte) {
+  int rawData =256 * highByte + lowByte;
+  return rawData;
+}
+float processMisfire3 (byte highbyte, byte lowByte) {
+  int rawData =256 * highByte + lowByte;
+  return rawData;
+}
+float processMisfire4 (byte highbyte, byte lowByte) {
+  int rawData =256 * highByte + lowByte;
+  return rawData;
+}
+float processMisfire5 (byte highbyte, byte lowByte) {
+  int rawData =256 * highByte + lowByte;
+  return rawData;
+}
 float processIntakeAirTemp(byte rawData) {
   return rawData * 0.75 - 48;
 }
@@ -77,7 +97,7 @@ struct Condition {
   byte requestMessage[8];
 };
 
-float CoolantTemp = 0, Boost = 0, AFR = 0, AFRexpected = 0, MisfireCount = 0, IntakeAirTemp = 0;
+float CoolantTemp = 0, Boost = 0, AFR = 0, AFRexpected = 0, MisfireCount = 0, Misfire1 = 0, Misfire2 = 0, Misfire3 = 0, Misfire4 = 0, Misfire5 = 0, IntakeAirTemp = 0;
 
 Condition conditions[] = {
   {0x10, 0xD8, "CoolantTemp", &CoolantTemp, processCoolantTemp, {0xCD, 0x7A, 0xA6, 0x10, 0xD8, 0x01, 0x00, 0x00}},
@@ -85,6 +105,11 @@ Condition conditions[] = {
   {0x10, 0x34, "AFR", &AFR, processAFR, {0xCD, 0x7A, 0xA6, 0x10, 0x34, 0x01, 0x00, 0x00}},
   {0x12, 0xBB, "AFRexpected", &AFRexpected, processAFRexpected, {0xCD, 0x7A, 0xA6, 0x12, 0xBB, 0x01, 0x00, 0x00}},
   {0x10, 0xCA, "MisfireCount", &MisfireCount, processMisfireCount, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
+  {0x10, 0xCA, "Misfire1", &Misfire1, processMisfire1, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
+  {0x10, 0xCA, "Misfire2", &Misfire2, processMisfire2, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
+  {0x10, 0xCA, "Misfire3", &Misfire3, processMisfire3, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
+  {0x10, 0xCA, "Misfire4", &Misfire4, processMisfire4, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
+  {0x10, 0xCA, "Misfire5", &Misfire5, processMisfire5, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
   {0x10, 0xCE, "IntakeAirTemp", &IntakeAirTemp, processIntakeAirTemp, {0xCD, 0x7A, 0xA6, 0x10, 0xCE, 0x01, 0x00, 0x00}}
 };
 
@@ -121,7 +146,7 @@ void data() {           //Displayed current data
   TV.print(200, 44, String(Boost).c_str());
   TV.print(200, 66, String(AFR).c_str());
   TV.print(200, 88, String(AFRexpected).c_str());
-  sprintf(buffer, "%d    %d    %d    %d    %d", MisfireCount, MisfireCount, MisfireCount, MisfireCount, MisfireCount);
+  sprintf(buffer, "%d    %d    %d    %d    %d", Misfire1, Misfire2, Misfire3, Misfire4, Misfire5);
   TV.print(30, 152, buffer);
 }
 
