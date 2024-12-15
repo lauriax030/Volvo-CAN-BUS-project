@@ -35,6 +35,7 @@ unsigned long lastSendTime1 = 0; // K-line message last send time
 unsigned long sendDelay = 3000; // Delay between K-line + Canbus messages
 unsigned long lastSendTime = 0; // Canbus message last send time
 unsigned long startTime = 0;          //Start time for counting
+unsigned long lastSendTime2 = 0;
 const int rti_delay = 100;            //RTI message delay
 const int durationInitial = 3000;     //Initial image duration
 
@@ -64,23 +65,23 @@ float processMisfireCount(byte highByte, byte lowByte) {
   int rawData = 256 * highByte + lowByte;
   return rawData;
 }
-float processMisfire1 (byte highbyte, byte lowByte) {
+float processMisfire1 (byte highByte, byte lowByte) {
   int rawData =256 * highByte + lowByte;
   return rawData;
 }
-float processMisfire2 (byte highbyte, byte lowByte) {
+float processMisfire2 (byte highByte, byte lowByte) {
   int rawData =256 * highByte + lowByte;
   return rawData;
 }
-float processMisfire3 (byte highbyte, byte lowByte) {
+float processMisfire3 (byte highByte, byte lowByte) {
   int rawData =256 * highByte + lowByte;
   return rawData;
 }
-float processMisfire4 (byte highbyte, byte lowByte) {
+float processMisfire4 (byte highByte, byte lowByte) {
   int rawData =256 * highByte + lowByte;
   return rawData;
 }
-float processMisfire5 (byte highbyte, byte lowByte) {
+float processMisfire5 (byte highByte, byte lowByte) {
   int rawData =256 * highByte + lowByte;
   return rawData;
 }
@@ -104,12 +105,12 @@ Condition conditions[] = {
   {0x12, 0x9D, "Boost", &Boost, processBoost, {0xCD, 0x7A, 0xA6, 0x12, 0x9D, 0x01, 0x00, 0x00}},
   {0x10, 0x34, "AFR", &AFR, processAFR, {0xCD, 0x7A, 0xA6, 0x10, 0x34, 0x01, 0x00, 0x00}},
   {0x12, 0xBB, "AFRexpected", &AFRexpected, processAFRexpected, {0xCD, 0x7A, 0xA6, 0x12, 0xBB, 0x01, 0x00, 0x00}},
-  {0x10, 0xCA, "MisfireCount", &MisfireCount, processMisfireCount, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
-  {0x10, 0x31, "Misfire1", &Misfire1, processMisfire1, {0xCD, 0x7A, 0xA6, 0x10, 0x31, 0x01, 0x00, 0x00}},
-  {0x10, 0x3A, "Misfire2", &Misfire2, processMisfire2, {0xCD, 0x7A, 0xA6, 0x10, 0x3A, 0x01, 0x00, 0x00}},
-  {0x10, 0x3C, "Misfire3", &Misfire3, processMisfire3, {0xCD, 0x7A, 0xA6, 0x10, 0x4A, 0x01, 0x00, 0x00}},
-  {0x10, 0x45, "Misfire4", &Misfire4, processMisfire4, {0xCD, 0x7A, 0xA6, 0x10, 0x3C, 0x01, 0x00, 0x00}},
-  {0x10, 0x4A, "Misfire5", &Misfire5, processMisfire5, {0xCD, 0x7A, 0xA6, 0x10, 0x45, 0x01, 0x00, 0x00}},
+ // {0x10, 0xCA, "MisfireCount", &MisfireCount, processMisfireCount, {0xCD, 0x7A, 0xA6, 0x10, 0xCA, 0x01, 0x00, 0x00}},
+ // {0x10, 0x31, "Misfire1", &Misfire1, processMisfire1, {0xCD, 0x7A, 0xA6, 0x10, 0x31, 0x01, 0x00, 0x00}},
+ // {0x10, 0x3A, "Misfire2", &Misfire2, processMisfire2, {0xCD, 0x7A, 0xA6, 0x10, 0x3A, 0x01, 0x00, 0x00}},
+ // {0x10, 0x3C, "Misfire3", &Misfire3, processMisfire3, {0xCD, 0x7A, 0xA6, 0x10, 0x4A, 0x01, 0x00, 0x00}},
+ // {0x10, 0x45, "Misfire4", &Misfire4, processMisfire4, {0xCD, 0x7A, 0xA6, 0x10, 0x3C, 0x01, 0x00, 0x00}},
+ // {0x10, 0x4A, "Misfire5", &Misfire5, processMisfire5, {0xCD, 0x7A, 0xA6, 0x10, 0x45, 0x01, 0x00, 0x00}},
   {0x10, 0xCE, "IntakeAirTemp", &IntakeAirTemp, processIntakeAirTemp, {0xCD, 0x7A, 0xA6, 0x10, 0xCE, 0x01, 0x00, 0x00}}
 };
 
@@ -117,7 +118,12 @@ const int conditionCount = sizeof(conditions) / sizeof(conditions[0]);
 
 // Function to write data to RTI display
 void rtiWrite(char byte) {
+//    if ((millis() - lastSendTime2) < rti_delay) { //timer
+//  return;
+//    }  
   Serial.print(byte);
+    
+  //  lastSendTime2 = millis();
   delay(rti_delay);
 }
 
@@ -141,11 +147,11 @@ void dataLayout() {   //Data information
 void data() {           //Displayed current data
   TV.select_font(font8x8);
   char buffer[50];
-  TV.print(200, 0, String(CoolantTemp).c_str());
-  TV.print(200, 22, String(IntakeAirTemp).c_str());
-  TV.print(200, 44, String(Boost).c_str());
-  TV.print(200, 66, String(AFR).c_str());
-  TV.print(200, 88, String(AFRexpected).c_str());
+  TV.print(180, 0, String(CoolantTemp).c_str());
+  TV.print(180, 22, String(IntakeAirTemp).c_str());
+  TV.print(180, 44, String(Boost).c_str());
+  TV.print(180, 66, String(AFR).c_str());
+  TV.print(180, 88, String(AFRexpected).c_str());
   sprintf(buffer, "%d    %d    %d    %d    %d", Misfire1, Misfire2, Misfire3, Misfire4, Misfire5);
   TV.print(30, 152, buffer);
 }
@@ -204,7 +210,28 @@ void loop() {
   unsigned char len = 0;
   unsigned char buf[8];
 
-  if (CAN1.checkReceive() == CAN_MSGAVAIL) {
+       unsigned char canbusMessage[8] = {0xD8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+ CAN0.sendMsgBuf(0x000FFFFE, 1, 8, canbusMessage);
+
+  for (int i = 0; i < conditionCount; i++) {
+    CAN0.sendMsgBuf(0x000FFFFE, 1, 8, conditions[i].requestMessage);
+  }
+
+  while (CAN0.checkReceive() == CAN_MSGAVAIL) {
+    CAN0.readMsgBuf(&rxId, &len, buf);
+
+    for (int i = 0; i < conditionCount; i++) {
+      if (rxId == 0x80800021 && buf[3] == conditions[i].byte4 && buf[4] == conditions[i].byte5) {
+        *(conditions[i].data) = conditions[i].process(buf[5], buf[6]);
+        Serial.print(conditions[i].name);
+        Serial.print(": ");
+        Serial.println(*(conditions[i].data));
+      }
+    }
+  }
+
+
+  while (CAN1.checkReceive() == CAN_MSGAVAIL) {
     CAN1.readMsgBuf(&rxId, &len, buf);
 
     uint32_t getId = rxId & 0x00FFFFFF;
@@ -212,11 +239,11 @@ void loop() {
     if (getId == 0x200066 || getId == 0x400066 || getId == 0x404066) { // Check if message ID matches the button message ID
       // Check the last two bytes for button press
       if (buf[6] == ENTER[0] && buf[7] == ENTER[1]) {
-        //Serial.println("Enter Button Pressed");
+        Serial.println("Enter Button Pressed");
         runDisplay = true;
       }
       else if (buf[6] == BACK[0] && buf[7] == BACK[1]) {
-        //Serial.println("Back Button Pressed");
+        Serial.println("Back Button Pressed");
         runDisplay = false;
       }
     }
@@ -248,26 +275,12 @@ void loop() {
       dataLayout();
       clearedScreen = true; // Ensure the screen is only cleared once
     }
-     unsigned char canbusMessage[8] = {0xD8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
- CAN0.sendMsgBuf(0x000FFFFE, 1, 8, canbusMessage);
-
-for (int i = 0; i < conditionCount - 1; i++) {
-    CAN0.sendMsgBuf(0x000FFFFE, 1, 8, conditions[i].requestMessage);
-    if (CAN0.checkReceive() == CAN_MSGAVAIL) {
-    CAN0.readMsgBuf(&rxId, &len, buf);
-      if (rxId == 0x80800021 && buf[3] == conditions[i].byte4 && buf[4] == conditions[i].byte5) {
-        *(conditions[i].data) = conditions[i].process(buf[5], buf[6]);
-        //Serial.print(conditions[i].name);
-        //Serial.print(": ");
-        //Serial.println(*(conditions[i].data));
-      }
-    }
-  }
     data();
   }
 }
 else {
   //Serial.println("Display off...");
   startTime = millis();
+  TV.clear_screen();
 }
 }
