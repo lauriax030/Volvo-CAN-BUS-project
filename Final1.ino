@@ -268,6 +268,6 @@ for (int i = 0; i < conditionCount - 1; i++) {
 }
 else {
   //Serial.println("Display off...");
-  startTime = 0;
+  startTime = millis();
 }
 }
