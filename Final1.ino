@@ -215,23 +215,23 @@ void loop() {
 
   for (int i = 0; i < conditionCount; i++) {
     CAN0.sendMsgBuf(0x000FFFFE, 1, 8, conditions[i].requestMessage);
-  }
-
-  while (CAN0.checkReceive() == CAN_MSGAVAIL) {
-    CAN0.readMsgBuf(&rxId, &len, buf);
-
-    for (int i = 0; i < conditionCount; i++) {
-      if (rxId == 0x80800021 && buf[3] == conditions[i].byte4 && buf[4] == conditions[i].byte5) {
-        *(conditions[i].data) = conditions[i].process(buf[5], buf[6]);
-        Serial.print(conditions[i].name);
-        Serial.print(": ");
-        Serial.println(*(conditions[i].data));
+    while(1) {
+      if (CAN0.checkReceive() == CAN_MSGAVAIL) {
+        CAN0.readMsgBuf(&rxId, &len, buf);
+        uint32_t canId = rxId & 0x0000000F;
+        if (canId == 0x1 && buf[3] == conditions[i].byte4 && buf[4] == conditions[i].byte5) {
+        //if (rxId == 0x80800021 && buf[3] == conditions[i].byte4 && buf[4] == conditions[i].byte5) {
+          *(conditions[i].data) = conditions[i].process(buf[5], buf[6]);
+          Serial.print(conditions[i].name);
+          Serial.print(": ");
+          Serial.println(*(conditions[i].data));
+          break;
+        }
       }
     }
   }
 
-
-  while (CAN1.checkReceive() == CAN_MSGAVAIL) {
+  if (CAN1.checkReceive() == CAN_MSGAVAIL) {
     CAN1.readMsgBuf(&rxId, &len, buf);
 
     uint32_t getId = rxId & 0x00FFFFFF;
